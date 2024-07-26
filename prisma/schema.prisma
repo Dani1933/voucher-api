@@ -1,0 +1,30 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model VoucherTable {
+  id         String   @id @default(uuid())
+  name       String
+  start_date DateTime
+  end_date   DateTime
+  amount     Int
+
+  UVCTables  UVCTable[]
+}
+
+model UVCTable {
+  id         String   @id @default(uuid())
+  id_voucher String
+  start_date DateTime
+  end_date   DateTime
+  amount     Int
+  code       String   @unique
+
+  Voucher    VoucherTable @relation(fields: [id_voucher], references: [id])
+}
